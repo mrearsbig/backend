@@ -1,0 +1,1 @@
+from .productmodel import Product
