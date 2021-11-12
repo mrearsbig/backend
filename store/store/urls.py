@@ -13,9 +13,41 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView
+)
+
+from users.views import UserCreateAPIView
+
+from products.views import (
+    ProductAdminListCreateAPIView,
+    ProductAdminRetrieveUpdateDestroyAPIView,
+    ProductClientRetrieveAPIView,
+    ProductClientListAPIView
+)
+
+from orders.views import (
+    OrderAdminRetrieveAPIView,
+    OrderAdminListAPIView,
+    OrderClientRetrieveAPIView,
+    OrderClientListAPIView
+)
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('api/user', TokenObtainPairView.as_view()),
+    path('api/user/refresh', TokenRefreshView.as_view()),
+    path('api/users/register', UserCreateAPIView.as_view()),
+
+    path('api/products', ProductAdminListCreateAPIView.as_view()),
+    path('api/products/<int:pk>', ProductAdminRetrieveUpdateDestroyAPIView.as_view()),
+    path('api/client/products', ProductClientListAPIView.as_view()),
+    path('api/client/products/<int:pk>', ProductClientRetrieveAPIView.as_view()),
+
+    path('api/orders', OrderAdminListAPIView.as_view()),
+    path('api/orders/<int:pk>', OrderAdminRetrieveAPIView.as_view()),
+    path('api/client/orders', OrderClientListAPIView.as_view()),
+    path('api/client/orders/<int:pk>', OrderClientRetrieveAPIView.as_view()),
 ]
