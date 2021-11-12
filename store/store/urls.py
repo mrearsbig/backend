@@ -48,6 +48,6 @@ urlpatterns = [
 
     path('api/orders', OrderAdminListAPIView.as_view()),
     path('api/orders/<int:pk>', OrderAdminRetrieveAPIView.as_view()),
-    path('api/client/orders', OrderClientListAPIView.as_view()),
-    path('api/client/orders/<int:pk>', OrderClientRetrieveAPIView.as_view()),
+    path('api/client/<int:pk>/orders', OrderClientListAPIView.as_view()),
+    path('api/client/<int:pk>/orders/<int:pk>', OrderClientRetrieveAPIView.as_view()),
 ]
