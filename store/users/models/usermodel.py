@@ -1,42 +1,39 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from django.db.models.fields import BooleanField
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, password, fullname):
+    def _create_user(self, email, username, password, fullname, **extra_fields):
+        email = self.normalize_email(email)
         user = self.model(
-            email = self.normalize_email(email),
+            email = email,
             username = username,
             password = password,
-            fullname = fullname
+            fullname = fullname,
+            **extra_fields
         )
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, username, password, fullname):
-        user = self.create_user(
-            email = email,
-            username = username,
-            password = password,
-            fullname = fullname
-        )
-        user.is_admin = True
-        user.save()
-        return user
+    def create_user(self, email, username, password, fullname, **extra_fields):
+        return self._create_user(email, username, password, fullname, **extra_fields)
 
-class User(AbstractBaseUser):
+    def create_superuser(self, email, username, password, fullname, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self._create_user(email, username, password, fullname, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField()
     username = models.CharField(max_length = 50, unique = True)
-    password = models.CharField(max_length = 256)
     fullname = models.CharField(max_length = 150)
     cellphone = models.CharField(max_length = 15, blank = True, null = True)
     city = models.CharField(max_length = 70, blank = True, null = True)
     address = models.CharField(max_length = 150, blank = True, null = True)
-    is_active = BooleanField(default = True)
-    is_admin = BooleanField(default = False)
+    is_staff = models.BooleanField(default = False)
+    is_active = models.BooleanField(default = True)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'username', 'password', 'fullname']
+    REQUIRED_FIELDS = ['email', 'fullname']

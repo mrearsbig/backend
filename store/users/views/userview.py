@@ -12,7 +12,6 @@ class UserCreateAPIView(generics.CreateAPIView):
         user_serializer = self.serializer_class(data = request.data)
         user_serializer.is_valid(raise_exception = True)
         user_serializer.save()
-
         token_serializer = TokenObtainPairSerializer(data = {
             'username': request.data['password'],
             'password': request.data['password']
