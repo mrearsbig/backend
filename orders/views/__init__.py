@@ -1,9 +1,3 @@
-from .orderadminview import (
-    OrderAdminRetrieveAPIView,
-    OrderAdminListAPIView
-)
+from .orderadminview import OrderAdminListAPIView
 
-from .orderclientview import (
-    OrderClientRetrieveAPIView,
-    OrderClientListAPIView
-)
+from .orderclientview import OrderClientListAPIView
