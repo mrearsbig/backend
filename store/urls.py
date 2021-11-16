@@ -30,9 +30,7 @@ from products.views import (
 )
 
 from orders.views import (
-    OrderAdminRetrieveAPIView,
     OrderAdminListAPIView,
-    OrderClientRetrieveAPIView,
     OrderClientListAPIView
 )
 
@@ -47,7 +45,5 @@ urlpatterns = [
     path('api/client/products/<int:pk>', ProductClientRetrieveAPIView.as_view()),
 
     path('api/orders', OrderAdminListAPIView.as_view()),
-    path('api/orders/<int:pk>', OrderAdminRetrieveAPIView.as_view()),
     path('api/client/<int:pk>/orders', OrderClientListAPIView.as_view()),
-    path('api/client/<int:pk>/orders/<int:pk>', OrderClientRetrieveAPIView.as_view()),
 ]
